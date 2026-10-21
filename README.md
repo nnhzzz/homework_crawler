@@ -77,14 +77,14 @@ pip install -r requirements.txt
 
 Lệnh thực thi tuần tự: Cào bài viết từ forum UIT $\rightarrow$ Tiền xử lý $\rightarrow$ Phân loại cảm xúc & Dán nhãn $\rightarrow$ Xuất biểu đồ phân tích:
 ```bash
-python3 main.py --all --max-topics 220
+python3 main.py --all --max-topics 1050
 ```
 
 ### 3. Thực thi từng giai đoạn độc lập (Modular Execution)
 
 - **Thu thập dữ liệu qua API:**
   ```bash
-  python3 main.py --crawl --method api --pages 5 --max-topics 220
+  python3 main.py --crawl --method api --max-topics 1050
   ```
 - **Hoặc thu thập bằng HTML Scraping (BeautifulSoup):**
   ```bash
@@ -136,11 +136,11 @@ python3 run_dashboard.py
 
 ---
 
-## 📊 Kết Quả Thực Tế Trên Diễn Đàn UIT (220 Bài Viết)
+## 📊 Kết Quả Thực Tế Trên Diễn Đàn UIT (1.050 Bài Viết)
 
-- **Trung lập (Hỏi đáp / Thông báo):** `59.1%` (130 bài)
-- **Xấu (Tiêu cực / Phàn nàn):** `22.3%` (49 bài)
-- **Tốt (Tích cực / Khen ngợi):** `18.6%` (41 bài)
+- **Trung lập (Hỏi đáp / Thông báo):** `87.4%` (918 bài)
+- **Xấu (Tiêu cực / Phàn nàn):** `7.0%` (74 bài)
+- **Tốt (Tích cực / Khen ngợi):** `5.5%` (58 bài)
 
 **Các vấn đề sinh viên phản ánh nhiều nhất:**
 - **Cơ sở vật chất:** Máy lạnh không mát, chập chờn, wifi tầng cao, thẻ xe.

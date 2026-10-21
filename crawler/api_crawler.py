@@ -10,6 +10,7 @@ import time
 import json
 import logging
 from typing import List, Dict, Any, Optional
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -21,7 +22,7 @@ logger = logging.getLogger("APICrawler")
 
 
 class UITApiCrawler:
-    def __init__(self, base_url: str = FORUM_BASE_URL, headers: Optional[Dict[str, str]] = None, delay: float = 0.5):
+    def __init__(self, base_url: str = FORUM_BASE_URL, headers: Optional[Dict[str, str]] = None, delay: float = 0.15):
         self.base_url = base_url.rstrip("/")
         self.headers = headers or DEFAULT_HEADERS
         self.delay = delay
@@ -157,8 +158,98 @@ class UITApiCrawler:
             "full_text": full_text
         }
 
-    def crawl_full_dataset(self, latest_pages: int = 3, search_keywords: Optional[List[str]] = None, max_topics: int = 150) -> List[Dict[str, Any]]:
-        """Quy trình cào hoàn chỉnh: Gom danh sách topics -> Tải chi tiết nội dung từng bài."""
+    def _fetch_single_item(self, t: Dict[str, Any]) -> Dict[str, Any]:
+        """Tải nội dung và format một chủ đề cụ thể."""
+        details = self.fetch_topic_content(t["id"])
+        return {
+            **t,
+            "author": details["author"],
+            "first_post": details["first_post"],
+            "replies_count": len(details["replies"]),
+            "content": details["first_post"],
+            "full_text": f"{t['title']}. {details['full_text']}"
+        }
+
+    def crawl_posts_feed(self, max_posts: int = 1050) -> List[Dict[str, Any]]:
+        """Thu thập danh sách bài viết thảo luận trực tiếp qua endpoint /posts.json (phân trang bằng before)."""
+        collected = []
+        before = None
+        batches = (max_posts // 50) + 10
+
+        logger.info(f"[API] Bắt đầu thu thập bài viết qua /posts.json (Mục tiêu: {max_posts} bài)...")
+        for i in range(batches):
+            endpoint = "/posts.json"
+            params = {"before": before} if before else None
+            data = self._get(endpoint, params=params)
+            if not data or "latest_posts" not in data:
+                break
+
+            posts = data.get("latest_posts", [])
+            if not posts:
+                break
+
+            for p in posts:
+                cooked = p.get("cooked", "")
+                text = BeautifulSoup(cooked, "html.parser").get_text(separator=" ", strip=True) if cooked else ""
+                title = p.get("topic_title") or f"Chủ đề #{p.get('topic_id')}"
+                author = p.get("username") or "uit_member"
+
+                collected.append({
+                    "id": p["id"],
+                    "topic_id": p.get("topic_id"),
+                    "title": title,
+                    "slug": p.get("topic_slug", ""),
+                    "views": p.get("reads", 0),
+                    "posts_count": p.get("posts_count", 1),
+                    "like_count": p.get("like_count", 0),
+                    "created_at": p.get("created_at", ""),
+                    "category_id": p.get("category_id"),
+                    "url": f"{self.base_url}/t/{p.get('topic_slug', 'topic')}/{p.get('topic_id', '')}/{p.get('post_number', 1)}",
+                    "author": author,
+                    "first_post": text,
+                    "replies_count": p.get("reply_count", 0),
+                    "content": text,
+                    "full_text": f"{title}. {text}"
+                })
+
+                if len(collected) >= max_posts:
+                    break
+
+            if len(collected) >= max_posts:
+                break
+
+            before = posts[-1]["id"]
+            if (i + 1) % 5 == 0 or len(collected) >= max_posts:
+                logger.info(f"[API] Đã thu thập được {len(collected)}/{max_posts} bài viết...")
+
+        logger.info(f"[API] Hoàn thành thu thập {len(collected)} bài viết qua /posts.json!")
+        return collected
+
+    def crawl_full_dataset(self, latest_pages: int = 40, search_keywords: Optional[List[str]] = None, max_topics: int = 1050, max_workers: int = 6) -> List[Dict[str, Any]]:
+        """Quy trình cào hoàn chỉnh: Gom danh sách topics -> Tải chi tiết nội dung từng bài (đa luồng nhanh chóng)."""
+        # Với quy mô lớn (>= 300 bài), ưu tiên cơ chế posts feed tốc độ cao từ Discourse API
+        if max_topics >= 300:
+            posts_data = self.crawl_posts_feed(max_posts=max_topics)
+            seen_ids = {p["id"] for p in posts_data}
+
+            # Bổ sung các chủ đề tìm kiếm theo từ khóa nếu còn thiếu
+            if search_keywords and len(posts_data) < max_topics:
+                kw_topics = self.crawl_topics_by_keywords(search_keywords, max_per_kw=15)
+                for kt in kw_topics:
+                    if kt["id"] not in seen_ids and len(posts_data) < max_topics:
+                        seen_ids.add(kt["id"])
+                        posts_data.append({
+                            **kt,
+                            "author": "uit_member",
+                            "first_post": kt.get("title", ""),
+                            "replies_count": 0,
+                            "content": kt.get("title", ""),
+                            "full_text": kt.get("title", "")
+                        })
+
+            logger.info(f"[API] Tổng hợp thành công {len(posts_data)} bài viết thực tế từ Diễn đàn UIT.")
+            return posts_data[:max_topics]
+
         topics = self.crawl_latest_topics(max_pages=latest_pages)
 
         if search_keywords:
@@ -171,24 +262,27 @@ class UITApiCrawler:
                     topics.append(kt)
 
         topics = topics[:max_topics]
-        logger.info(f"[API] Bắt đầu lấy nội dung chi tiết cho {len(topics)} chủ đề...")
+        logger.info(f"[API] Bắt đầu tải nội dung chi tiết cho {len(topics)} chủ đề (max_workers={max_workers})...")
 
         full_dataset = []
-        for idx, t in enumerate(topics, 1):
-            if idx % 10 == 0 or idx == len(topics):
-                logger.info(f"Đang xử lý {idx}/{len(topics)}: {t['title'][:40]}...")
+        id_order = {t["id"]: i for i, t in enumerate(topics)}
 
-            details = self.fetch_topic_content(t["id"])
-            item = {
-                **t,
-                "author": details["author"],
-                "first_post": details["first_post"],
-                "replies_count": len(details["replies"]),
-                "content": details["first_post"],
-                "full_text": f"{t['title']}. {details['full_text']}"
-            }
-            full_dataset.append(item)
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            future_to_id = {executor.submit(self._fetch_single_item, t): t["id"] for t in topics}
+            done_count = 0
+            for future in as_completed(future_to_id):
+                done_count += 1
+                try:
+                    res = future.result()
+                    full_dataset.append(res)
+                except Exception as e:
+                    tid = future_to_id[future]
+                    logger.error(f"Lỗi khi tải topic {tid}: {e}")
 
+                if done_count % 100 == 0 or done_count == len(topics):
+                    logger.info(f"Đang xử lý {done_count}/{len(topics)} chủ đề...")
+
+        full_dataset.sort(key=lambda x: id_order.get(x["id"], 0))
         return full_dataset
 
     def save_dataset(self, dataset: List[Dict[str, Any]], filename_prefix: str = "uit_forum_api") -> Dict[str, str]:

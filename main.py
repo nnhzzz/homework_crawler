@@ -48,14 +48,14 @@ SEARCH_KEYWORDS = [
 ]
 
 
-def step_crawl(method: str = "api", pages: int = 3, max_topics: int = 150) -> Path:
+def step_crawl(method: str = "api", pages: int = 40, max_topics: int = 1100) -> Path:
     """Bước 1: Thu thập dữ liệu từ diễn đàn UIT."""
     logger.info("=" * 60)
     logger.info(f"BẮT ĐẦU BƯỚC 1: THU THẬP DỮ LIỆU TỪ FORUM UIT (Phương pháp: {method.upper()})")
     logger.info("=" * 60)
 
     if method == "api":
-        crawler = UITApiCrawler(delay=0.4)
+        crawler = UITApiCrawler(delay=0.15)
         dataset = crawler.crawl_full_dataset(
             latest_pages=pages,
             search_keywords=SEARCH_KEYWORDS,
@@ -163,8 +163,8 @@ def main():
     parser = argparse.ArgumentParser(description="UIT Forum Sentiment Crawler & Rule-based Classifier Pipeline")
     parser.add_argument("--crawl", action="store_true", help="Chạy crawler thu thập dữ liệu từ forum.uit.edu.vn")
     parser.add_argument("--method", choices=["api", "html"], default="api", help="Phương pháp cào (api: Discourse API, html: BeautifulSoup)")
-    parser.add_argument("--pages", type=int, default=3, help="Số trang cần cào (mặc định: 3)")
-    parser.add_argument("--max-topics", type=int, default=150, help="Số lượng bài tối đa cần lấy (mặc định: 150)")
+    parser.add_argument("--pages", type=int, default=40, help="Số trang cần cào (mặc định: 40)")
+    parser.add_argument("--max-topics", type=int, default=1100, help="Số lượng bài tối đa cần lấy (mặc định: 1100)")
 
     parser.add_argument("--analyze", action="store_true", help="Làm sạch và phân loại cảm xúc / khía cạnh cho dữ liệu đã cào")
     parser.add_argument("--visualize", action="store_true", help="Xuất các biểu đồ phân tích trực quan hóa vào data/reports/")
