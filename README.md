@@ -134,8 +134,6 @@ python3 run_dashboard.py
 ```
 Địa chỉ truy cập: **`http://localhost:8080`**
 
-*(Có thể mở trực tiếp file `dashboard/index.html` trên trình duyệt web bất kỳ).*
-
 ---
 
 ## 📊 Kết Quả Thực Tế Trên Diễn Đàn UIT (220 Bài Viết)
