@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UIT Forum Sentiment Analyzer | Hệ thống Thu thập & Phân loại Đánh giá Trường UIT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- Chart.js CDN for interactive charting -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-logo">UIT</div>
+        <div class="brand-text">
+          <h1>UIT Forum Sentiment & Aspect Analyzer</h1>
+          <p>Hệ thống Thu thập Dữ liệu & Phân loại Đánh giá Diễn đàn Trường ĐH Công nghệ Thông tin (ĐHQG-HCM)</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="https://forum.uit.edu.vn" target="_blank" class="badge-link">
+          <span class="status-indicator live"></span> Nguồn: forum.uit.edu.vn
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <!-- Top KPI Cards -->
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-icon icon-total">📋</div>
+        <div class="kpi-content">
+          <span class="kpi-label">Tổng bài viết đã cào</span>
+          <h2 class="kpi-value" id="kpi-total">0</h2>
+          <span class="kpi-sub">Cập nhật từ latest & search API</span>
+        </div>
+      </div>
+
+      <div class="kpi-card positive">
+        <div class="kpi-icon icon-pos">👍</div>
+        <div class="kpi-content">
+          <span class="kpi-label">Đánh giá Tốt (Tích cực)</span>
+          <h2 class="kpi-value" id="kpi-pos">0</h2>
+          <span class="kpi-sub" id="kpi-pos-pct">0% tổng thảo luận</span>
+        </div>
+      </div>
+
+      <div class="kpi-card negative">
+        <div class="kpi-icon icon-neg">⚠️</div>
+        <div class="kpi-content">
+          <span class="kpi-label">Đánh giá Xấu (Phàn nàn)</span>
+          <h2 class="kpi-value" id="kpi-neg">0</h2>
+          <span class="kpi-sub" id="kpi-neg-pct">0% tổng thảo luận</span>
+        </div>
+      </div>
+
+      <div class="kpi-card neutral">
+        <div class="kpi-icon icon-neu">💬</div>
+        <div class="kpi-content">
+          <span class="kpi-label">Trung lập (Hỏi đáp / Tin tức)</span>
+          <h2 class="kpi-value" id="kpi-neu">0</h2>
+          <span class="kpi-sub" id="kpi-neu-pct">0% tổng thảo luận</span>
+        </div>
+      </div>
+
+      <div class="kpi-card ml-card">
+        <div class="kpi-icon icon-ml">⚖️</div>
+        <div class="kpi-content">
+          <span class="kpi-label">Phương pháp phân loại</span>
+          <h2 class="kpi-value" id="kpi-ml-name">Tập luật & Sắc thái</h2>
+          <span class="kpi-sub" id="kpi-ml-acc">Rule-based & Lexicon (Chay)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visual Analytics Section -->
+    <section class="analytics-section">
+      <div class="card chart-card">
+        <div class="card-header">
+          <h3>📊 Tỷ lệ Cảm xúc Đánh giá</h3>
+          <span class="card-badge">Tổng quan</span>
+        </div>
+        <div class="chart-container donut-wrap">
+          <canvas id="sentimentChart"></canvas>
+        </div>
+      </div>
+
+      <div class="card chart-card">
+        <div class="card-header">
+          <h3>🏫 Các Khía cạnh về UIT được quan tâm</h3>
+          <span class="card-badge">Aspect Breakdown</span>
+        </div>
+        <div class="chart-container">
+          <canvas id="aspectChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Live Sentiment Tester -->
+    <section class="card tester-section">
+      <div class="card-header">
+        <div class="tester-header-title">
+          <h3>🧪 Trực tiếp Thử nghiệm Phân loại Cảm xúc & Khía cạnh</h3>
+          <p>Nhập bất kỳ ý kiến, nhận xét hoặc phàn nàn của sinh viên về trường UIT để hệ thống phân tích tức thì</p>
+        </div>
+        <div class="sample-chips">
+          <span class="chip" onclick="fillSample('Máy lạnh phòng B1.14 bị hỏng, bật không mát gì hết nóng quá!')">Thử: Hỏng máy lạnh</span>
+          <span class="chip" onclick="fillSample('Thầy cô phòng đào tạo hỗ trợ rất nhiệt tình và giải quyết hồ sơ nhanh chóng')">Thử: Khen giảng viên</span>
+          <span class="chip" onclick="fillSample('Hôm nay cổng đăng ký môn học lại bị sập web nghẽn mạng rồi')">Thử: Lỗi ĐKMH</span>
+          <span class="chip" onclick="fillSample('Thông báo lịch nộp học phí học kỳ 2 qua ngân hàng Vietcombank')">Thử: Thông báo học phí</span>
+        </div>
+      </div>
+      <div class="tester-body">
+        <div class="tester-input-group">
+          <textarea id="tester-input" placeholder="Ví dụ: Máy lạnh giảng đường E bị hư kêu to và không mát chút nào..."></textarea>
+          <button id="btn-test" class="btn btn-primary" onclick="testCustomText()">Phân tích ngay ⚡</button>
+        </div>
+        <div id="tester-result" class="tester-result hidden">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Data Explorer Table Section -->
+    <section class="card data-section">
+      <div class="data-header">
+        <div>
+          <h3>📑 Danh sách Bài viết Diễn đàn UIT & Nhãn Đánh giá</h3>
+          <p>Khám phá toàn bộ dữ liệu thực tế thu thập từ forum.uit.edu.vn</p>
+        </div>
+        <div class="filter-controls">
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="filter-search" placeholder="Tìm theo tiêu đề, tác giả..." oninput="filterData()">
+          </div>
+          <select id="filter-sentiment" onchange="filterData()" class="custom-select">
+            <option value="ALL">Tất cả cảm xúc</option>
+            <option value="POSITIVE">Tốt (Tích cực)</option>
+            <option value="NEGATIVE">Xấu (Phàn nàn)</option>
+            <option value="NEUTRAL">Trung lập (Hỏi đáp)</option>
+          </select>
+          <select id="filter-aspect" onchange="filterData()" class="custom-select">
+            <option value="ALL">Tất cả khía cạnh</option>
+            <!-- Generated dynamically -->
+          </select>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width: 60px;">ID</th>
+              <th>Tiêu đề bài viết</th>
+              <th style="width: 140px;">Tác giả</th>
+              <th style="width: 160px;">Khía cạnh UIT</th>
+              <th style="width: 130px;">Nhãn đánh giá</th>
+              <th style="width: 100px;">Điểm số</th>
+              <th style="width: 200px;">Từ khóa bằng chứng</th>
+              <th style="width: 90px; text-align: center;">Chi tiết</th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+            <!-- Populated via JavaScript -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-footer">
+        <span id="record-count">Đang tải dữ liệu...</span>
+        <div class="pagination" id="pagination">
+          <!-- Generated via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Static Report Charts Gallery -->
+    <section class="card reports-gallery">
+      <div class="card-header">
+        <h3>📈 Biểu đồ Báo cáo Xuất bản (DPI 300)</h3>
+        <span class="card-badge">Tự động sinh bởi Python Matplotlib & Seaborn</span>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-item">
+          <h4>Phân bố cảm xúc chung</h4>
+          <img src="../data/reports/sentiment_distribution.png" alt="Phân bố cảm xúc" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="gallery-item">
+          <h4>Tỷ lệ cảm xúc theo khía cạnh</h4>
+          <img src="../data/reports/sentiment_by_aspect.png" alt="Sắc thái theo khía cạnh" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="gallery-item">
+          <h4>Các khía cạnh thảo luận nhiều nhất</h4>
+          <img src="../data/reports/aspect_breakdown.png" alt="Khía cạnh thảo luận" onerror="this.parentElement.style.display='none'">
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Post Detail Modal -->
+  <div id="detail-modal" class="modal-backdrop hidden" onclick="closeModal(event)">
+    <div class="modal-dialog" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span id="modal-label" class="badge">POSITIVE</span>
+          <h3 id="modal-title">Tiêu đề bài viết</h3>
+        </div>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-meta-grid">
+          <div><strong>Tác giả:</strong> <span id="modal-author">admin</span></div>
+          <div><strong>Khía cạnh:</strong> <span id="modal-aspect">Cơ sở vật chất</span></div>
+          <div><strong>Điểm sắc thái:</strong> <span id="modal-score">0.0</span></div>
+          <div><strong>Độ tin cậy:</strong> <span id="modal-confidence">90%</span></div>
+        </div>
+
+        <div class="modal-reason-box">
+          <h4>Lý giải phân loại:</h4>
+          <p id="modal-reason">...</p>
+        </div>
+
+        <div class="modal-content-box">
+          <h4>Nội dung bài viết:</h4>
+          <div id="modal-content" class="post-content-view">...</div>
+        </div>
+
+        <div class="modal-action-row">
+          <a id="modal-url" href="#" target="_blank" class="btn btn-secondary">Xem bài gốc trên forum.uit.edu.vn ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load Data and Application Logic -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
