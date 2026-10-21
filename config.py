@@ -10,7 +10,7 @@ import certifi
 # Cấu hình SSL cho Python (tránh lỗi CERTIFICATE_VERIFY_FAILED trên macOS)
 os.environ["SSL_CERT_FILE"] = certifi.where()
 
-# Thư mục gốc dự án
+# Thư mục gốc bài tập
 BASE_DIR = Path(__file__).resolve().parent
 
 # Các đường dẫn lưu trữ dữ liệu

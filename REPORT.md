@@ -1,4 +1,4 @@
-# BÁO CÁO KẾT QUẢ ĐỒ ÁN
+# BÁO CÁO KẾT QUẢ BÀI TẬP
 ## ĐỀ TÀI: THU THẬP VÀ PHÂN LOẠI CẢM XÚC THẢO LUẬN TRÊN DIỄN ĐÀN UIT (forum.uit.edu.vn)
 
 ---
@@ -20,7 +20,7 @@
 #### 1.1. Bối cảnh
 Diễn đàn Sinh viên Trường Đại học Công nghệ Thông tin - ĐHQG-HCM ([https://forum.uit.edu.vn](https://forum.uit.edu.vn)) là kênh giao tiếp trực tuyến chính thống và sôi nổi giữa sinh viên, cán bộ quản lý và giảng viên. Nơi đây tập trung các thảo luận về học tập, cơ sở vật chất, hệ thống đăng ký môn học, học phí, hoạt động đoàn hội và dịch vụ sinh viên.
 
-#### 1.2. Mục tiêu đồ án
+#### 1.2. Mục tiêu bài tập
 1. **Thu thập dữ liệu tự động (Web Scraping):** Xây dựng crawler tự động thu thập các bài viết, chủ đề và bình luận từ diễn đàn UIT qua cả 2 cơ chế: Discourse REST API và HTML DOM Scraping (BeautifulSoup).
 2. **Tiền xử lý văn bản:** Chuẩn hóa Unicode dựng sẵn (NFC), bóc tách HTML, và đặc biệt là chuẩn hóa từ điển viết tắt mang phong cách đặc trưng của sinh viên CNTT/UIT (`csvc`, `dkmh`, `pđt`, `ctsv`, `gv`,...).
 3. **Phân loại cảm xúc chay (Rule-based Sentiment Classification):** Xác định thái độ của bài viết: nói **Tốt** (khen ngợi, tích cực), nói **Xấu** (phàn nàn, tiêu cực) hay **Trung lập** (hỏi đáp thủ tục, thông báo hành chính) bằng phương pháp tập luật và từ điển ngữ nghĩa tiếng Việt, không sử dụng mô hình học máy phức tạp.
@@ -155,7 +155,7 @@ Từ tập mẫu thực tế **220 bài viết** thu thập từ `forum.uit.edu.
 
 ### 7. GIAO DIỆN WEB DASHBOARD TRỰC QUAN HÓA
 
-Đồ án xây dựng hoàn chỉnh giao diện Web Dashboard tương tác trong thư mục `dashboard/`:
+Bài tập xây dựng hoàn chỉnh giao diện Web Dashboard tương tác trong thư mục `dashboard/`:
 - **Giao diện hiện đại (Dark Theme):** Tối ưu trải nghiệm hiển thị với font *Plus Jakarta Sans*, màu sắc phân biệt trực quan: Xanh ngọc (Tốt), Đỏ cánh sen (Xấu), Xám (Trung lập).
 - **Thẻ thống kê KPI thời gian thực:** Hiển thị tổng số bài, tỷ lệ % theo từng nhãn.
 - **Biểu đồ động (Chart.js):** Biểu đồ tròn Donut phân bố cảm xúc và Biểu đồ cột các khía cạnh UIT.
@@ -167,8 +167,8 @@ Từ tập mẫu thực tế **220 bài viết** thu thập từ `forum.uit.edu.
 
 ### 8. KẾT LUẬN
 
-Đồ án đã giải quyết đúng trọng tâm và trọn vẹn yêu cầu của đề bài:
+Bài tập đã giải quyết đúng trọng tâm và trọn vẹn yêu cầu của đề bài:
 - Thu thập dữ liệu thực tế thành công từ Diễn đàn UIT qua cả API và bóc tách HTML DOM.
 - Phân loại cảm xúc chay dựa trên tập luật và từ điển ngữ nghĩa tiếng Việt: đơn giản, tốc độ cực nhanh (< 2 giây cho toàn bộ dataset), minh bạch, dễ giải thích từng từ khóa bằng chứng.
 - Nhận diện chính xác 6 khía cạnh trường mà sinh viên quan tâm.
-- Cung cấp đầy đủ công cụ dòng lệnh (CLI), biểu đồ phân tích và Web Dashboard trực quan phục vụ thuyết minh đồ án.
+- Cung cấp đầy đủ công cụ dòng lệnh (CLI), biểu đồ phân tích và Web Dashboard trực quan phục vụ báo cáo bài tập.

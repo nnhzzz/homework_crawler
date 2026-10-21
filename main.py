@@ -1,5 +1,5 @@
 """
-Script điều phối toàn bộ quy trình (Master Pipeline) cho Dự án Thu thập và Phân loại Cảm xúc Diễn đàn UIT:
+Script điều phối toàn bộ quy trình (Master Pipeline) cho Bài tập Thu thập và Phân loại Cảm xúc Diễn đàn UIT:
 1. Thu thập dữ liệu (Crawler): API REST / HTML BeautifulSoup
 2. Tiền xử lý & Làm sạch (Text Cleaning & Normalization)
 3. Phân loại cảm xúc chay & Dán nhãn khía cạnh trường (Rule-based Sentiment & Aspect Labeling)
