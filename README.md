@@ -1,8 +1,6 @@
 # UIT Forum Crawler & Rule-based Sentiment Classifier 🎓
 ### Hệ thống Thu thập Dữ liệu & Phân loại Đánh giá Diễn đàn Trường Đại học Công nghệ Thông tin (ĐHQG-HCM)
 
-> **Mục tiêu đề bài:** Thu thập các bài viết, thảo luận từ Diễn đàn sinh viên UIT ([https://forum.uit.edu.vn](https://forum.uit.edu.vn)), làm sạch dữ liệu và **phân loại chay (rule-based / lexicon)** xem diễn đàn nói **Tốt** hay **Xấu** về trường rồi dán nhãn theo các khía cạnh cụ thể (*Cơ sở vật chất, Giảng viên, Học phí, Đăng ký môn học, Dịch vụ sinh viên*).
-
 ---
 
 ## 🌟 Điểm Nổi Bật Của Hệ Thống
@@ -20,10 +18,6 @@
    - **Tự động gán nhãn 3 mức**: **TỐT** (Khen ngợi/Tích cực), **XẤU** (Phàn nàn/Tiêu cực), **TRUNG LẬP** (Hỏi đáp/Thông báo hành chính).
    - **Gán nhãn khía cạnh trường**: Tự động phát hiện bài viết nói về *Cơ sở vật chất, Học phí & Học bổng, ĐKMH & Hệ thống, Giảng viên & Đào tạo, Phòng ban & Dịch vụ SV*.
    - Trích xuất từ khóa bằng chứng và lý giải minh bạch lý do gán nhãn.
-4. **Trực quan hóa & Xuất bản biểu đồ (DPI 300):**
-   - Tự động vẽ và lưu biểu đồ: Phân bố cảm xúc (Bar & Donut), Thống kê khía cạnh trường, Tỷ lệ khen/chê theo từng khía cạnh.
-5. **Giao diện Web Dashboard Tương tác (Interactive Dashboard):**
-   - Thẻ thống kê KPI thời gian thực, biểu đồ Chart.js, bảng tra cứu lọc đa chiều (theo cảm xúc, theo khía cạnh, tìm kiếm từ khóa), và **công cụ thử nghiệm phân loại cảm xúc trực tiếp trên trình duyệt**.
 
 ---
 
