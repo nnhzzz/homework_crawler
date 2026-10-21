@@ -12,7 +12,7 @@
    - Chuẩn hóa mã Unicode tiếng Việt dựng sẵn (`NFC`).
    - Xóa bỏ HTML tags, URL, Email, ký tự thừa và trích dẫn quote.
    - **Mở rộng từ điển viết tắt đặc thù sinh viên UIT**: `csvc` $\rightarrow$ cơ sở vật chất, `dkmh` $\rightarrow$ đăng ký môn học, `pđt` $\rightarrow$ phòng đào tạo, `ctsv` $\rightarrow$ phòng công tác sinh viên, `sv` $\rightarrow$ sinh viên, `gv` $\rightarrow$ giảng viên, `ktx` $\rightarrow$ ký túc xá, `đhqg` $\rightarrow$ đại học quốc gia,...
-3. **Phân loại cảm xúc chay (Rule-based & Aspect Lexicon):**
+3. **Phân loại cảm xúc (Rule-based & Aspect Lexicon):**
    - Sử dụng tập luật ngữ nghĩa tiếng Việt kết hợp từ điển sắc thái (Lexicon) chuyên biệt cho môi trường đại học.
    - **Xử lý hiện tượng phủ định đảo ngược nghĩa**: Ví dụ `không mát`, `không hỏng`, `chờ quá lâu`, `sập web`.
    - **Tự động gán nhãn 3 mức**: **TỐT** (Khen ngợi/Tích cực), **XẤU** (Phàn nàn/Tiêu cực), **TRUNG LẬP** (Hỏi đáp/Thông báo hành chính).
@@ -35,10 +35,10 @@ BT_crawler/
 │   ├── api_crawler.py            # Cào dữ liệu qua Discourse REST API
 │   └── html_crawler.py           # Cào dữ liệu qua bóc tách HTML DOM (BeautifulSoup)
 │
-├── processor/                    # Package xử lý và phân loại cảm xúc chay
+├── processor/                    # Package xử lý và phân loại cảm xúc
 │   ├── __init__.py
 │   ├── text_cleaner.py           # Làm sạch văn bản, chuẩn hóa từ viết tắt UIT
-│   ├── sentiment_analyzer.py     # Phân loại cảm xúc chay theo tập luật & khía cạnh (Rule/Lexicon)
+│   ├── sentiment_analyzer.py     # Phân loại cảm xúc theo tập luật & khía cạnh (Rule/Lexicon)
 │   └── visualizer.py             # Trực quan hóa dữ liệu và xuất biểu đồ (Matplotlib/Seaborn)
 │
 ├── data/
@@ -75,7 +75,7 @@ pip install -r requirements.txt
 
 ### 2. Thực thi toàn bộ quy trình (End-to-End Pipeline)
 
-Lệnh thực thi tuần tự: Cào bài viết từ forum UIT $\rightarrow$ Tiền xử lý $\rightarrow$ Phân loại cảm xúc chay & Dán nhãn $\rightarrow$ Xuất biểu đồ phân tích:
+Lệnh thực thi tuần tự: Cào bài viết từ forum UIT $\rightarrow$ Tiền xử lý $\rightarrow$ Phân loại cảm xúc & Dán nhãn $\rightarrow$ Xuất biểu đồ phân tích:
 ```bash
 python3 main.py --all --max-topics 220
 ```
@@ -90,7 +90,7 @@ python3 main.py --all --max-topics 220
   ```bash
   python3 main.py --crawl --method html --pages 3 --max-topics 100
   ```
-- **Làm sạch văn bản và phân loại chay:**
+- **Làm sạch văn bản và phân loại cảm xúc:**
   ```bash
   python3 main.py --analyze
   ```

@@ -8,7 +8,7 @@
 2. [KIẾN TRÚC HỆ THỐNG](#2-kiến-trúc-hệ-thống)
 3. [PHƯƠNG PHÁP THU THẬP DỮ LIỆU (WEB CRAWLER)](#3-phương-pháp-thu-thập-dữ-liệu-web-crawler)
 4. [QUY TRÌNH TIỀN XỬ LÝ VĂN BẢN TIẾNG VIỆT](#4-quy-trình-tiền-xử-lý-văn-bản-tiếng-việt)
-5. [PHƯƠNG PHÁP PHÂN LOẠI CẢM XÚC CHAY & KHÍA CẠNH (RULE-BASED LEXICON)](#5-phương-pháp-phân-loại-cảm-xúc-chay--khía-cạnh)
+5. [PHƯƠNG PHÁP PHÂN LOẠI CẢM XÚC & KHÍA CẠNH (RULE-BASED LEXICON)](#5-phương-pháp-phân-loại-cảm-xúc--khía-cạnh)
 6. [PHÂN TÍCH KẾT QUẢ THỰC TẾ TRÊN DIỄN ĐÀN UIT](#6-phân-tích-kết-quả-thực-tế-trên-diễn-đàn-uit)
 7. [GIAO DIỆN WEB DASHBOARD TRỰC QUAN HÓA](#7-giao-diện-web-dashboard-trực-quan-hóa)
 8. [KẾT LUẬN & HƯỚNG PHÁT TRIỂN](#8-kết-luận--hướng-phát-triển)
@@ -23,7 +23,7 @@ Diễn đàn Sinh viên Trường Đại học Công nghệ Thông tin - ĐHQG-H
 #### 1.2. Mục tiêu bài tập
 1. **Thu thập dữ liệu tự động (Web Scraping):** Xây dựng crawler tự động thu thập các bài viết, chủ đề và bình luận từ diễn đàn UIT qua cả 2 cơ chế: Discourse REST API và HTML DOM Scraping (BeautifulSoup).
 2. **Tiền xử lý văn bản:** Chuẩn hóa Unicode dựng sẵn (NFC), bóc tách HTML, và đặc biệt là chuẩn hóa từ điển viết tắt mang phong cách đặc trưng của sinh viên CNTT/UIT (`csvc`, `dkmh`, `pđt`, `ctsv`, `gv`,...).
-3. **Phân loại cảm xúc chay (Rule-based Sentiment Classification):** Xác định thái độ của bài viết: nói **Tốt** (khen ngợi, tích cực), nói **Xấu** (phàn nàn, tiêu cực) hay **Trung lập** (hỏi đáp thủ tục, thông báo hành chính) bằng phương pháp tập luật và từ điển ngữ nghĩa tiếng Việt, không sử dụng mô hình học máy phức tạp.
+3. **Phân loại cảm xúc (Rule-based Sentiment Classification):** Xác định thái độ của bài viết: nói **Tốt** (khen ngợi, tích cực), nói **Xấu** (phàn nàn, tiêu cực) hay **Trung lập** (hỏi đáp thủ tục, thông báo hành chính) bằng phương pháp tập luật và từ điển ngữ nghĩa tiếng Việt, không sử dụng mô hình học máy phức tạp.
 4. **Phân loại khía cạnh trường (Aspect-based Labeling):** Gán nhãn chủ đề thuộc về khía cạnh nào: *Cơ sở vật chất, Học phí & Học bổng, Đăng ký môn học & Hệ thống, Giảng viên & Đào tạo, Phòng ban & Dịch vụ sinh viên, Môi trường chung*.
 5. **Trực quan hóa:** Xây dựng Dashboard web tương tác và xuất bản các biểu đồ báo cáo khoa học.
 
@@ -51,7 +51,7 @@ Quy trình xử lý dữ liệu được thiết kế theo mô hình đường �
              +-- Mở rộng từ viết tắt (dkmh, csvc, pđt...)
                           |
                           v
-     [3. Phân loại Cảm xúc Chay & Gán nhãn Khía cạnh]
+     [3. Phân loại Cảm xúc & Gán nhãn Khía cạnh]
      +-- Aspect Detection (6 nhóm khía cạnh UIT)
      +-- Negation Handling (xử lý đảo ngược cảm xúc)
      +-- Rule & Lexicon Scoring (+Pos, -Neg, Neutral)
@@ -107,7 +107,7 @@ Văn bản thảo luận trên mạng xã hội và diễn đàn sinh viên ch�
 
 ---
 
-### 5. PHƯƠNG PHÁP PHÂN LOẠI CẢM XÚC CHAY & KHÍA CẠNH
+### 5. PHƯƠNG PHÁP PHÂN LOẠI CẢM XÚC & KHÍA CẠNH
 
 Phương pháp phân loại được xây dựng hoàn toàn dựa trên tập luật ngôn ngữ (Rule-based) và từ điển sắc thái (Sentiment Lexicon), đảm bảo tính minh bạch, dễ giải thích và không phụ thuộc vào các mô hình AI phức tạp.
 
@@ -169,6 +169,6 @@ Bài tập xây dựng hoàn chỉnh giao diện Web Dashboard tương tác tron
 
 Bài tập đã giải quyết đúng trọng tâm và trọn vẹn yêu cầu của đề bài:
 - Thu thập dữ liệu thực tế thành công từ Diễn đàn UIT qua cả API và bóc tách HTML DOM.
-- Phân loại cảm xúc chay dựa trên tập luật và từ điển ngữ nghĩa tiếng Việt: đơn giản, tốc độ cực nhanh (< 2 giây cho toàn bộ dataset), minh bạch, dễ giải thích từng từ khóa bằng chứng.
+- Phân loại cảm xúc dựa trên tập luật và từ điển ngữ nghĩa tiếng Việt: đơn giản, tốc độ cực nhanh (< 2 giây cho toàn bộ dataset), minh bạch, dễ giải thích từng từ khóa bằng chứng.
 - Nhận diện chính xác 6 khía cạnh trường mà sinh viên quan tâm.
 - Cung cấp đầy đủ công cụ dòng lệnh (CLI), biểu đồ phân tích và Web Dashboard trực quan phục vụ báo cáo bài tập.

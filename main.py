@@ -2,7 +2,7 @@
 Script điều phối toàn bộ quy trình (Master Pipeline) cho Bài tập Thu thập và Phân loại Cảm xúc Diễn đàn UIT:
 1. Thu thập dữ liệu (Crawler): API REST / HTML BeautifulSoup
 2. Tiền xử lý & Làm sạch (Text Cleaning & Normalization)
-3. Phân loại cảm xúc chay & Dán nhãn khía cạnh trường (Rule-based Sentiment & Aspect Labeling)
+3. Phân loại cảm xúc & Dán nhãn khía cạnh trường (Rule-based Sentiment & Aspect Labeling)
 4. Trực quan hóa & Xuất báo cáo biểu đồ (Visualizer)
 5. Web Dashboard tương tác
 """
@@ -73,7 +73,7 @@ def step_crawl(method: str = "api", pages: int = 3, max_topics: int = 150) -> Pa
 
 
 def step_analyze(raw_file: Optional[Path] = None) -> Tuple[pd.DataFrame, Path]:
-    """Bước 2: Tiền xử lý, phân loại cảm xúc chay (Tốt/Xấu/Trung lập) và gán nhãn khía cạnh trường."""
+    """Bước 2: Tiền xử lý, phân loại cảm xúc (Tốt/Xấu/Trung lập) và gán nhãn khía cạnh trường."""
     logger.info("=" * 60)
     logger.info("BẮT ĐẦU BƯỚC 2: TIỀN XỬ LÝ & PHÂN LOẠI CẢM XÚC (RULE-BASED) - GÁN NHÃN KHÍA CẠNH")
     logger.info("=" * 60)
@@ -142,9 +142,9 @@ def step_visualize(labeled_file: Optional[Path] = None) -> Dict[str, str]:
 
 
 def predict_single(text: str):
-    """Phân loại cảm xúc chay của 1 đoạn văn bản trực tiếp qua dòng lệnh."""
+    """Phân loại cảm xúc của 1 đoạn văn bản trực tiếp qua dòng lệnh."""
     print("\n" + "=" * 60)
-    print("PHÂN LOẠI CẢM XÚC CHAY (RULE-BASED LEXICON) CHO VĂN BẢN ĐẦU VÀO")
+    print("PHÂN LOẠI CẢM XÚC (RULE-BASED LEXICON) CHO VĂN BẢN ĐẦU VÀO")
     print("=" * 60)
     print(f"Văn bản: '{text}'\n")
 
@@ -166,7 +166,7 @@ def main():
     parser.add_argument("--pages", type=int, default=3, help="Số trang cần cào (mặc định: 3)")
     parser.add_argument("--max-topics", type=int, default=150, help="Số lượng bài tối đa cần lấy (mặc định: 150)")
 
-    parser.add_argument("--analyze", action="store_true", help="Làm sạch và phân loại cảm xúc chay / khía cạnh cho dữ liệu đã cào")
+    parser.add_argument("--analyze", action="store_true", help="Làm sạch và phân loại cảm xúc / khía cạnh cho dữ liệu đã cào")
     parser.add_argument("--visualize", action="store_true", help="Xuất các biểu đồ phân tích trực quan hóa vào data/reports/")
     parser.add_argument("--all", action="store_true", help="Chạy toàn bộ pipeline từ cào dữ liệu đến trực quan hóa")
 
@@ -186,7 +186,7 @@ def main():
 
     # Nếu không có cờ nào được truyền hoặc chọn --all, chạy toàn bộ quy trình
     if args.all or (not args.crawl and not args.analyze and not args.visualize):
-        logger.info("Khởi động toàn bộ quy trình End-to-End (Phân loại chay)...")
+        logger.info("Khởi động toàn bộ quy trình End-to-End (Phân loại cảm xúc)...")
         raw_file = step_crawl(method=args.method, pages=args.pages, max_topics=args.max_topics)
         df, labeled_file = step_analyze(raw_file)
         step_visualize(PROCESSED_DATA_DIR / "uit_forum_labeled.csv")
