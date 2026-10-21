@@ -15,7 +15,7 @@
    - Xóa bỏ HTML tags, URL, Email, ký tự thừa và trích dẫn quote.
    - **Mở rộng từ điển viết tắt đặc thù sinh viên UIT**: `csvc` $\rightarrow$ cơ sở vật chất, `dkmh` $\rightarrow$ đăng ký môn học, `pđt` $\rightarrow$ phòng đào tạo, `ctsv` $\rightarrow$ phòng công tác sinh viên, `sv` $\rightarrow$ sinh viên, `gv` $\rightarrow$ giảng viên, `ktx` $\rightarrow$ ký túc xá, `đhqg` $\rightarrow$ đại học quốc gia,...
 3. **Phân loại cảm xúc chay (Rule-based & Aspect Lexicon):**
-   - **Không cần mô hình AI phức tạp**, sử dụng tập luật ngữ nghĩa tiếng Việt kết hợp từ điển sắc thái (Lexicon) chuyên biệt cho môi trường đại học.
+   - Sử dụng tập luật ngữ nghĩa tiếng Việt kết hợp từ điển sắc thái (Lexicon) chuyên biệt cho môi trường đại học.
    - **Xử lý hiện tượng phủ định đảo ngược nghĩa**: Ví dụ `không mát`, `không hỏng`, `chờ quá lâu`, `sập web`.
    - **Tự động gán nhãn 3 mức**: **TỐT** (Khen ngợi/Tích cực), **XẤU** (Phàn nàn/Tiêu cực), **TRUNG LẬP** (Hỏi đáp/Thông báo hành chính).
    - **Gán nhãn khía cạnh trường**: Tự động phát hiện bài viết nói về *Cơ sở vật chất, Học phí & Học bổng, ĐKMH & Hệ thống, Giảng viên & Đào tạo, Phòng ban & Dịch vụ SV*.
@@ -70,37 +70,37 @@ BT_crawler/
 
 ---
 
-## 🚀 Hướng Dẫn Cài Đặt & Sử Dụng
+## 🚀 Hướng Dẫn Cài Đặt & Vận Hành
 
 ### 1. Cài đặt thư viện
 
-Yêu cầu Python 3.9+:
+Yêu cầu môi trường Python 3.9 trở lên:
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Chạy toàn bộ quy trình chỉ với 1 lệnh (End-to-End Pipeline)
+### 2. Thực thi toàn bộ quy trình (End-to-End Pipeline)
 
-Lệnh này sẽ tự động: Cào bài viết từ forum UIT $\rightarrow$ Làm sạch $\rightarrow$ Phân loại cảm xúc chay & Dán nhãn $\rightarrow$ Sinh biểu đồ phân tích:
+Lệnh thực thi tuần tự: Cào bài viết từ forum UIT $\rightarrow$ Tiền xử lý $\rightarrow$ Phân loại cảm xúc chay & Dán nhãn $\rightarrow$ Xuất biểu đồ phân tích:
 ```bash
-python3 main.py --all --max-topics 80
+python3 main.py --all --max-topics 220
 ```
 
-### 3. Chạy từng bước độc lập (Modular Execution)
+### 3. Thực thi từng giai đoạn độc lập (Modular Execution)
 
-- **Cào dữ liệu mới qua API**:
+- **Thu thập dữ liệu qua API:**
   ```bash
-  python3 main.py --crawl --method api --pages 3 --max-topics 100
+  python3 main.py --crawl --method api --pages 5 --max-topics 220
   ```
-- **Hoặc cào bằng HTML Scraping (BeautifulSoup)**:
+- **Hoặc thu thập bằng HTML Scraping (BeautifulSoup):**
   ```bash
-  python3 main.py --crawl --method html --pages 2 --max-topics 50
+  python3 main.py --crawl --method html --pages 3 --max-topics 100
   ```
-- **Làm sạch văn bản và phân loại chay**:
+- **Làm sạch văn bản và phân loại chay:**
   ```bash
   python3 main.py --analyze
   ```
-- **Xuất biểu đồ phân tích trực quan**:
+- **Xuất biểu đồ phân tích trực quan:**
   ```bash
   python3 main.py --visualize
   ```
@@ -109,7 +109,7 @@ python3 main.py --all --max-topics 80
 
 ## 🔍 Phân Loại Trực Tiếp Câu Bình Luận (CLI Live Predict)
 
-Bạn có thể truyền trực tiếp bất kỳ câu nhận xét hoặc phản ánh của sinh viên để hệ thống phân tích tức thì:
+Hệ thống hỗ trợ phân tích tức thì từng đoạn ý kiến hoặc phản ánh đơn lẻ thông qua tham số `--predict`:
 
 ```bash
 # Phản ánh phàn nàn (Tiêu cực):
@@ -129,18 +129,18 @@ python3 main.py --predict "Thông báo lịch nộp học phí học kỳ 2 qua 
 
 ## 🖥️ Trực Quan Hóa Với Web Dashboard Tương Tác
 
-Để trải nghiệm giao diện người dùng trực quan với bộ lọc, biểu đồ động và công cụ thử nghiệm cảm xúc:
+Giao diện trực quan hỗ trợ lọc dữ liệu đa chiều, biểu đồ thống kê động và công cụ thử nghiệm phân loại trực tiếp:
 
 ```bash
-# Cách 1: Qua main.py
+# Khởi chạy qua main.py
 python3 main.py --dashboard
 
-# Cách 2: Qua script launcher
+# Hoặc khởi chạy qua script launcher
 python3 run_dashboard.py
 ```
-Sau đó truy cập trình duyệt tại: **`http://localhost:8080`**
+Địa chỉ truy cập: **`http://localhost:8080`**
 
-*(Ngoài ra bạn cũng có thể mở trực tiếp file `dashboard/index.html` trong trình duyệt bất kỳ lúc nào).*
+*(Có thể mở trực tiếp file `dashboard/index.html` trên trình duyệt web bất kỳ).*
 
 ---
 
