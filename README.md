@@ -47,7 +47,8 @@ BT_crawler/
 │   │   └── uit_forum_raw.csv
 │   ├── processed/                # Dữ liệu đã làm sạch & dán nhãn
 │   │   ├── uit_forum_labeled.json
-│   │   └── uit_forum_labeled.csv
+│   │   ├── uit_forum_labeled.csv
+│   │   └── uit_forum_sentiment_links.csv # File rút gọn: Link bài viết forum & đánh giá (Tốt/Xấu/Trung lập)
 │   └── reports/                  # Biểu đồ phân tích trực quan xuất ra
 │       ├── sentiment_distribution.png
 │       ├── aspect_breakdown.png

@@ -98,11 +98,26 @@ def step_analyze(raw_file: Optional[Path] = None) -> Tuple[pd.DataFrame, Path]:
     # Lưu kết quả đã dán nhãn
     json_out = PROCESSED_DATA_DIR / "uit_forum_labeled.json"
     csv_out = PROCESSED_DATA_DIR / "uit_forum_labeled.csv"
+    links_csv_out = PROCESSED_DATA_DIR / "uit_forum_sentiment_links.csv"
+    root_links_csv = Path(__file__).parent / "uit_forum_sentiment_links.csv"
 
     with open(json_out, "w", encoding="utf-8") as f:
         json.dump(labeled_data, f, ensure_ascii=False, indent=2)
 
     df.to_csv(csv_out, index=False, encoding="utf-8-sig")
+
+    # Xuất file CSV rút gọn: chỉ URL forum và đánh giá (Tốt / Xấu / Trung lập)
+    label_map = {
+        LABEL_POSITIVE: "Tốt",
+        LABEL_NEGATIVE: "Xấu",
+        LABEL_NEUTRAL: "Trung lập"
+    }
+    df_links = pd.DataFrame({
+        "url": df["url"],
+        "danh_gia": df["label"].map(label_map)
+    })
+    df_links.to_csv(links_csv_out, index=False, encoding="utf-8-sig")
+    df_links.to_csv(root_links_csv, index=False, encoding="utf-8-sig")
 
     logger.info(f"Đã dán nhãn xong {len(labeled_data)} bài viết:")
     sentiment_counts = df["label"].value_counts()
@@ -117,7 +132,7 @@ def step_analyze(raw_file: Optional[Path] = None) -> Tuple[pd.DataFrame, Path]:
             f.write("// Auto-generated data for UIT Forum Dashboard\n")
             f.write("window.UIT_DATA = " + json.dumps(labeled_data, ensure_ascii=False) + ";\n")
 
-    logger.info(f"Dữ liệu dán nhãn đã lưu tại:\n - {json_out}\n - {csv_out}")
+    logger.info(f"Dữ liệu dán nhãn đã lưu tại:\n - {json_out}\n - {csv_out}\n - {links_csv_out}\n - {root_links_csv}")
     return df, json_out
 
 
