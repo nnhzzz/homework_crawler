@@ -144,11 +144,11 @@ Sau đó truy cập trình duyệt tại: **`http://localhost:8080`**
 
 ---
 
-## 📊 Kết Quả Thực Tế Trên Diễn Đàn UIT
+## 📊 Kết Quả Thực Tế Trên Diễn Đàn UIT (220 Bài Viết)
 
-- **Trung lập (Hỏi đáp / Thông báo):** ~60.0% (48 bài)
-- **Tốt (Tích cực / Khen ngợi):** ~27.5% (22 bài)
-- **Xấu (Tiêu cực / Phàn nàn):** ~12.5% (10 bài)
+- **Trung lập (Hỏi đáp / Thông báo):** `59.1%` (130 bài)
+- **Xấu (Tiêu cực / Phàn nàn):** `22.3%` (49 bài)
+- **Tốt (Tích cực / Khen ngợi):** `18.6%` (41 bài)
 
 **Các vấn đề sinh viên phản ánh nhiều nhất:**
 - **Cơ sở vật chất:** Máy lạnh không mát, chập chờn, wifi tầng cao, thẻ xe.

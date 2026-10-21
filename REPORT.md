@@ -136,13 +136,12 @@ Sắc thái cảm xúc tiếng Việt có tính phức tạp cao do hiện tư�
 ---
 
 ### 6. PHÂN TÍCH KẾT QUẢ THỰC TẾ TRÊN DIỄN ĐÀN UIT
-
-Từ tập mẫu thực tế 80 bài viết thu thập từ `forum.uit.edu.vn`:
+Từ tập mẫu thực tế **220 bài viết** thu thập từ `forum.uit.edu.vn`:
 
 1. **Phân bố cảm xúc chung:**
-   - **Trung lập (NEUTRAL):** **60.0%** (48 bài) — Chiếm đa số do đặc thù diễn đàn đại học là nơi đăng tải thông báo tuyển sinh, lịch thi, biểu mẫu học vụ, quy định học bổng, hỏi đáp thủ tục.
-   - **Tốt / Khen ngợi (POSITIVE):** **27.5%** (22 bài) — Sinh viên ghi nhận sự hỗ trợ nhiệt tình, giải đáp nhanh từ các thầy cô phòng đào tạo, khen các chương trình học bổng doanh nghiệp và chất lượng giảng dạy.
-   - **Xấu / Phàn nàn (NEGATIVE):** **12.5%** (10 bài) — Thể hiện các bức xúc thực tế về cơ sở vật chất và hệ thống.
+   - **Trung lập (NEUTRAL):** **59.1%** (130 bài) — Chiếm đa số do đặc thù diễn đàn đại học là nơi đăng tải thông báo tuyển sinh, lịch thi, biểu mẫu học vụ, quy định học bổng, hỏi đáp thủ tục.
+   - **Xấu / Phàn nàn (NEGATIVE):** **22.3%** (49 bài) — Thể hiện các bức xúc thực tế về cơ sở vật chất (máy lạnh, wifi), lỗi hệ thống và thủ tục hành chính.
+   - **Tốt / Khen ngợi (POSITIVE):** **18.6%** (41 bài) — Sinh viên ghi nhận sự hỗ trợ nhiệt tình, giải đáp nhanh từ các thầy cô phòng đào tạo, khen các chương trình học bổng doanh nghiệp và chất lượng giảng dạy.
 
 2. **Các vấn đề bị phàn nàn nhiều nhất (Tiêu cực):**
    - **Cơ sở vật chất:** Máy lạnh một số phòng (đặc biệt tòa B, tòa E) không mát hoặc kêu to trong giờ học; wifi chập chờn ở một số khu vực giảng đường; quy định/hạn thẻ giữ xe máy.
